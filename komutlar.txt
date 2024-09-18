@@ -1,5 +1,6 @@
 yess https://necessaryfor.github.io/all/yeah.txt
 yes2 https://shell.prinsh.com/Nathan/22xc.txt
+vur https://shell.prinsh.com/Nathan/vur.txt
 dump https://necessaryfor.github.io/all/dump.txt
 manager https://necessaryfor.github.io/all/manager.txt
 izinver https://necessaryfor.github.io/all/izinver.txt

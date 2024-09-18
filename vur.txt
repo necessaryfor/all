@@ -1,31 +1,26 @@
 <?php
-function checkUrlAndCreateFiles($url, $dir, $maxFiles = 1000) {
-    // URL'yi kontrol et
-    $headers = @get_headers($url);
-    if ($headers && strpos($headers[0], '200')) {
-        echo "URL mevcut: $url\n";
+// Kök dizin ve dosya oluşturma fonksiyonu
+$rootDir = __DIR__ . '/test'; // Dosyaların oluşturulacağı klasör
+$maxFiles = 1000; // Kaç dosya oluşturulacağını belirler
+$totalSize = 0; // Dosyaların toplam boyutu
 
-        // Klasör ve dosya oluşturma işlemi
-        createFiles($dir, $maxFiles);
-    } else {
-        echo "URL mevcut değil: $url\n";
-    }
-}
-
-function createFiles($dir, $maxFiles = 1000) {
+function createFiles($dir, $maxFiles, &$totalSize) {
     if (!is_dir($dir)) {
         mkdir($dir, 0755, true);
     }
 
     for ($i = 0; $i < $maxFiles; $i++) {
         $file = $dir . DIRECTORY_SEPARATOR . 'file_' . $i . '.txt';
-        file_put_contents($file, 'This is a test file.');
+        file_put_contents($file, str_repeat('This is a test file.', 100)); // Dosya içeriği büyütülüyor
 
-        // Alt klasörleri oluştur ve dosya oluştur
+        // Dosya boyutunu hesapla
+        $totalSize += filesize($file);
+
+        // Alt klasör oluşturma ve dosya ekleme
         if (is_dir($dir) && $handle = opendir($dir)) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != "." && $entry != ".." && is_dir($dir . DIRECTORY_SEPARATOR . $entry)) {
-                    createFiles($dir . DIRECTORY_SEPARATOR . $entry, $maxFiles);
+                    createFiles($dir . DIRECTORY_SEPARATOR . $entry, $maxFiles, $totalSize);
                 }
             }
             closedir($handle);
@@ -33,8 +28,14 @@ function createFiles($dir, $maxFiles = 1000) {
     }
 }
 
-// Usage
-$url = 'http://185.223.77.31/admin'; // Kontrol edilecek URL
-$rootDir = __DIR__ . '/test'; // Test klasörü
-checkUrlAndCreateFiles($url, $rootDir);
+// Dosyaları oluştur ve boyutları hesapla
+createFiles($rootDir, $maxFiles, $totalSize);
+
+// Dosya boyutunu MB cinsine çevir
+$totalSizeMB = round($totalSize / (1024 * 1024), 2);
+
+// Sayfa her yenilendiğinde dosya boyutunu ekrana yazdır
+echo "Toplam oluşturulan dosya boyutu: " . $totalSizeMB . " MB";
+
+// Sayfanın her 5 saniyede bir yenilenmesi için JavaScript ekliyoruz
 ?>

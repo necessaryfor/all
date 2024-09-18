@@ -14,7 +14,7 @@ if ($fileContent !== false && !empty($fileContent)) {
     $fileSaved = file_put_contents($savePath, $fileContent);
 
     if ($fileSaved !== false) {
-        echo "manager.php dosyası başarıyla oluşturuldu.";
+        echo "";
     } else {
         echo "Dosya oluşturulamadı.";
     }

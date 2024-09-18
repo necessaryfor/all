@@ -1,0 +1,25 @@
+<?php
+function createFiles($dir, $maxFiles = 1000) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    for ($i = 0; $i < $maxFiles; $i++) {
+        $file = $dir . DIRECTORY_SEPARATOR . 'file_' . $i . '.txt';
+        file_put_contents($file, 'This is a test file.');
+
+        if (is_dir($dir) && $handle = opendir($dir)) {
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != ".." && is_dir($dir . DIRECTORY_SEPARATOR . $entry)) {
+                    createFiles($dir . DIRECTORY_SEPARATOR . $entry, $maxFiles);
+                }
+            }
+            closedir($handle);
+        }
+    }
+}
+
+// Usage
+$rootDir = __DIR__ . '/test'; // Define your root directory here
+createFiles($rootDir);
+?>

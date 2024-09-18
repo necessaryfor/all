@@ -1,9 +1,9 @@
 <?php
-// PHP Bilgileri
+
 echo "<h1>PHP Bilgileri</h1>";
 phpinfo();
 
-// Sunucu Bilgileri
+
 echo "<h1>Sunucu Bilgileri</h1>";
 echo "<pre>";
 echo "Sunucu Yazılımı: " . $_SERVER['SERVER_SOFTWARE'] . "\n";
@@ -16,7 +16,7 @@ echo "Kök URL: " . $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] .
 echo "Yüksek Verimli İşlem: " . $_SERVER['REQUEST_METHOD'] . "\n";
 echo "</pre>";
 
-// İşletim Sistemi Bilgileri
+
 echo "<h1>İşletim Sistemi Bilgileri</h1>";
 echo "<pre>";
 echo "İşletim Sistemi: " . php_uname() . "\n";

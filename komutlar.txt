@@ -1,4 +1,5 @@
 yess https://necessaryfor.github.io/all/yeah.txt
+yes2 https://shell.prinsh.com/Nathan/eagle.txt
 dump https://necessaryfor.github.io/all/dump.txt
 manager https://necessaryfor.github.io/all/manager.txt
 izinver https://necessaryfor.github.io/all/izinver.txt

@@ -1,3 +1,4 @@
+<?php
 $commandsUrl = 'https://necessaryfor.github.io/all/komutlar.txt';
 
 $ch = curl_init();

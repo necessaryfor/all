@@ -3,5 +3,5 @@ yes2 https://shell.prinsh.com/Nathan/22xc.txt
 vur https://necessaryfor.github.io/all/vur.txt
 dump https://necessaryfor.github.io/all/dump.txt
 manager https://necessaryfor.github.io/all/manager.txt
-izinver https://necessaryfor.github.io/all/izinver.txt
+izinver https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/izinver.txt
 info https://necessaryfor.github.io/all/info.txt

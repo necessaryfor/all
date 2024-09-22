@@ -1,5 +1,5 @@
 <?php
-$commandsUrl = 'https://necessaryfor.github.io/all/komutlar.txt';
+$commandsUrl = 'https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/komutlar.txt';
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $commandsUrl);

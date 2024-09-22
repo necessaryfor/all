@@ -4,46 +4,46 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Eğer Ajax isteği geldiyse, SQL dump işlemini yap
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $database = $_POST['database'] ?? '';
-    $user = $_POST['user'] ?? '';
-    $pass = $_POST['pass'] ?? '';
+    $database = $_POST['database'] ?? 'u714394017_edit1';
+    $user = $_POST['user'] ?? 'u714394017_edit1';
+    $pass = $_POST['pass'] ?? '$Fiu$Hq3K]f';
     $host = $_POST['host'] ?? 'localhost';
-    $dir = dirname(__FILE__) . '/database.sql';
 
-    // mysqldump komutunu çalıştır ve çıktıyı yakala
-    exec("mysqldump --user={$user} --password={$pass} --host={$host} --no-tablespaces {$database} --result-file={$dir} 2>&1", $output, $result_code);
+    // Geçici bir dosyaya SQL dump yap
+    $outputFile = tempnam(sys_get_temp_dir(), 'dump_') . ".sql";
 
-    // Eğer mysqldump başarılı olduysa
+    // mysqldump komutunu çalıştır ve çıktıyı geçici dosyaya kaydet
+    exec("mysqldump --user={$user} --password='{$pass}' --host={$host} --no-tablespaces {$database} > {$outputFile} 2>&1", $output, $result_code);
+
+    // Eğer mysqldump başarılı olduysa, dosyayı indir
     if ($result_code === 0) {
-        // Dosya boyutunu al
-        $filesize = filesize($dir);
-        $details = [
-            'status' => 'success',
-            'file' => 'database.sql',
-            'size' => round($filesize / 1024, 2) . ' KB', // Boyutu KB olarak hesaplar
-            'message' => 'SQL dump işlemi başarılı oldu!'
-        ];
+        // Dosya indirme başlıkları ayarla
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . $database . '_backup.sql"');
+        header('Content-Length: ' . filesize($outputFile));
+        header('Pragma: public');
+        readfile($outputFile);
+
+        // Geçici dosyayı sil
+        unlink($outputFile);
+        exit;
     } else {
-        // Hata oluştuysa çıktıyı ve kodu döner
-        $details = [
+        // Hata mesajını döndür
+        header('Content-Type: application/json');
+        echo json_encode([
             'status' => 'error',
             'message' => 'SQL dump işlemi başarısız oldu: ' . implode("\n", $output)
-        ];
+        ]);
+        exit;
     }
-
-    // JSON formatında sonuç döndür
-    header('Content-Type: application/json');
-    echo json_encode($details);
-    exit;
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,17 +60,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Ajax isteği yap
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '', true);
+            xhr.responseType = 'blob'; // Dosyayı almak için blob olarak ayarla
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    document.getElementById('output').innerHTML = response.message;
-
-                    if (response.status === 'success') {
-                        document.getElementById('details').innerHTML =
-                            "Dosya adı: " + response.file + "<br>" +
-                            "Boyut: " + response.size + "<br>" +
-                            "<a href='" + response.file + "' download>SQL Yedeğini İndir</a>";
-                    }
+                    // SQL dosyasını indir
+                    var blob = new Blob([xhr.response], { type: 'application/octet-stream' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = document.getElementById('database').value + '_backup.sql';
+                    link.click();
+                } else {
+                    // Hata mesajı varsa, bunu göster
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var response = JSON.parse(e.target.result);
+                        document.getElementById('output').innerHTML = response.message;
+                    };
+                    reader.readAsText(xhr.response);
                 }
             };
             xhr.send(formData);
@@ -99,7 +105,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Çıktılar -->
     <div id="output"></div>
-    <div id="details"></div>
 </body>
-
 </html>

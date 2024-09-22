@@ -10,6 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = $_POST['pass'] ?? '';
     $host = $_POST['host'] ?? 'localhost';
 
+    if (empty($database) || empty($user) || empty($pass)) {
+        // Eğer gerekli bilgiler boşsa hata mesajı döner
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Lütfen veritabanı adı, kullanıcı adı ve parola alanlarını doldurunuz.'
+        ]);
+        exit;
+    }
+
     // Geçici bir dosyaya SQL dump yap
     $outputFile = tempnam(sys_get_temp_dir(), 'dump_') . ".sql";
 
@@ -89,13 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Bilgi giriş inputları -->
     <label for="database">Veritabanı Adı:</label>
-    <input type="text" id="database" value="u714394017_edit1"><br><br>
+    <input type="text" id="database" placeholder="Veritabanı adını girin"><br><br>
 
     <label for="user">Kullanıcı Adı:</label>
-    <input type="text" id="user" value="u714394017_edit1"><br><br>
+    <input type="text" id="user" placeholder="Kullanıcı adını girin"><br><br>
 
     <label for="pass">Parola:</label>
-    <input type="password" id="pass" value="$Fiu$Hq3K]f"><br><br>
+    <input type="password" id="pass" placeholder="Parolanızı girin"><br><br>
 
     <label for="host">Host:</label>
     <input type="text" id="host" value="localhost"><br><br>
@@ -106,4 +116,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Çıktılar -->
     <div id="output"></div>
 </body>
+
 </html>

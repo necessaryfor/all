@@ -29,16 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Eğer mysqldump başarılı olduysa, dosyayı indir
     if ($result_code === 0) {
         // Dosya indirme başlıkları ayarla
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . $database . '_backup.sql"');
-        header('Content-Length: ' . filesize($outputFile));
-        header('Pragma: public');
-        readfile($outputFile);
-
-        // Geçici dosyayı sil
-        unlink($outputFile);
-        exit;
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'SQL dump işlemi başarılı oldu!',
+            'downloadUrl' => $outputFile
+        ]);
     } else {
         // Hata mesajını döndür
         header('Content-Type: application/json');
@@ -46,12 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'status' => 'error',
             'message' => 'SQL dump işlemi başarısız oldu: ' . implode("\n", $output)
         ]);
-        exit;
     }
+    exit;
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,23 +65,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Ajax isteği yap
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '', true);
-            xhr.responseType = 'blob'; // Dosyayı almak için blob olarak ayarla
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    // SQL dosyasını indir
-                    var blob = new Blob([xhr.response], { type: 'application/octet-stream' });
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = document.getElementById('database').value + '_backup.sql';
-                    link.click();
-                } else {
-                    // Hata mesajı varsa, bunu göster
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var response = JSON.parse(e.target.result);
-                        document.getElementById('output').innerHTML = response.message;
-                    };
-                    reader.readAsText(xhr.response);
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById('output').innerHTML = response.message;
+
+                    // Eğer başarılı ise dosyayı indir
+                    if (response.status === 'success') {
+                        var link = document.createElement('a');
+                        link.href = response.downloadUrl;
+                        link.download = document.getElementById('database').value + '_backup.sql';
+                        link.click();
+                    }
                 }
             };
             xhr.send(formData);

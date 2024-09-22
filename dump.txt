@@ -5,9 +5,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $database = $_POST['database'] ?? 'u714394017_edit1';
-    $user = $_POST['user'] ?? 'u714394017_edit1';
-    $pass = $_POST['pass'] ?? '$Fiu$Hq3K]f';
+    $database = $_POST['database'] ?? '';
+    $user = $_POST['user'] ?? '';
+    $pass = $_POST['pass'] ?? '';
     $host = $_POST['host'] ?? 'localhost';
 
     // Geçici bir dosyaya SQL dump yap

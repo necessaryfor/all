@@ -1,5 +1,5 @@
 yess https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/yeah.txt
-yes2 https://shell.prinsh.com/Nathan/eagle.txt
+yes2 https://shell.prinsh.com/Nathan/cyto.txt
 vur https://necessaryfor.github.io/all/vur.txt
 dump https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/dump.txt
 dump2 https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/dump2.php

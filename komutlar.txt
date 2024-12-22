@@ -6,5 +6,4 @@ dump2 https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/dump2.p
 manager https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/manager.txt
 izinver https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/izinver.txt
 info https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/info.txt
-adminer https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/adminer.txt
 up9 https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/upload9.php

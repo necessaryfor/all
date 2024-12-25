@@ -1,4 +1,4 @@
-yess https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/yeah.txt
+yess https://raw.githubusercontent.com/necessaryfor/neces/refs/heads/main/necessary.txt
 up9 https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/upload9.php
 dump https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/dump.txt
 dump2 https://raw.githubusercontent.com/necessaryfor/all/refs/heads/main/dump2.php
